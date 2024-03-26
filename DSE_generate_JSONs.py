@@ -13,9 +13,9 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('binary')           # positional argument
 parser.add_argument('filename')           # positional argument
-parser.add_arguemnt('-t', '--trainIterations')
-parser.add_arguemnt('-r', '--regions')
-parser.add_arguemnt('-e', '--executions')
+parser.add_argument('-t', '--trainIterations')
+parser.add_argument('-r', '--regions')
+parser.add_argument('-e', '--executions')
 
 args=parser.parse_args()
 
