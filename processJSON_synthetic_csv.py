@@ -28,7 +28,7 @@ args=parser.parse_args()
 filenames=args.filename.split(",")
 
 
-df = pd.DataFrame(columns=['Benchmark', 'regions', 'trainingIterations', 'testIterations', 'fp_rate', 'fn_rate', 'fn_percerr_mean','fn_relerr_var', 'fn_percerr_firstquartile', 'fn_percerr_median', 'fn_percerr_thirdquartile', 'fn_percerr_min', 'fn_percerr_max'])
+df = pd.DataFrame(columns=['Benchmark', 'regions', 'trainingIterations', 'testIterations', 'totalPos', 'totalNeg',  'fp_rate', 'fn_rate', 'fn_percerr_mean','fn_relerr_var', 'fn_percerr_1percentile', 'fn_percerr_2.5percentile', 'fn_percerr_10percentile', 'fn_percerr_firstquartile', 'fn_percerr_median', 'fn_percerr_thirdquartile', 'fn_percerr_90percentile', 'fn_percerr_97.5percentile', 'fn_percerr_99percentile', 'fn_percerr_min', 'fn_percerr_max'])
 
 for flname in filenames:
 
@@ -67,7 +67,7 @@ for flname in filenames:
 
             print(f"Progress: regions {regions}, trainIterations {trainIterations}, testIterations {testIterations}\ntot pos {total_pos}, tp {tp}, fp {fp} fp rate {fp_rate} | tot neg {total_neg}, tn {tn}, fn {fn} fn rate {fn_rate} | perc err mean: {percerrMean} max: {percerrMax} min: {percerrMin} rel err var: {relErrVar}\n") #| precision {precision}, recall {recall}, accuracy {accuracy}\n")
             
-            df.loc[len(df.index)] = [args.name, regions, trainIterations, testIterations, fp_rate, fn_rate, percerrMean, relErrVar, np.percentile(relErrNum, 25)*100, np.percentile(relErrNum, 50)*100, np.percentile(relErrNum, 75)*100, percerrMin, percerrMax]
+            df.loc[len(df.index)] = [args.name, regions, trainIterations, testIterations, total_pos, total_neg, fp_rate, fn_rate, percerrMean, relErrVar,  np.percentile(relErrNum, 1)*100, np.percentile(relErrNum, 2.5)*100, np.percentile(relErrNum, 10)*100, np.percentile(relErrNum, 25)*100, np.percentile(relErrNum, 50)*100, np.percentile(relErrNum, 75)*100,  np.percentile(relErrNum, 90)*100, np.percentile(relErrNum, 97.5)*100, np.percentile(relErrNum, 99)*100, percerrMin, percerrMax]
 
 if (args.append is None):
     df.to_csv(args.outfilename, sep=';')
