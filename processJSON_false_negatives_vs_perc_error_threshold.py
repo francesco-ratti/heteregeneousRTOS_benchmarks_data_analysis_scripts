@@ -23,7 +23,6 @@ parser.add_argument('-n', '--name')
 parser.add_argument('-a', '--append')
 
 parser.add_argument('-s', '--samples')
-parser.add_argument('-a', '--append')
 
 parser.add_argument('-fntmax', '--falsenegativethresholdmax')      # option that takes a value
 parser.add_argument('-fntmin', '--falsenegativethresholdmin')      # option that takes a value
