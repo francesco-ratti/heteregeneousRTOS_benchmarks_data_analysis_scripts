@@ -43,15 +43,15 @@ filenames=args.filename.split(",")
 
 df = pd.DataFrame()
 
+#print(fntresholds)
+
 for flname in filenames:
     with open(flname, "rb") as f:
         for record in ijson.items(f, "item"):
-
             fn_withthresh=np.zeros(len(fntresholds), dtype=int)
             regions=int(record["regions"])
             trainIterations=int(record["trainIterations"])
-        if ((args.regions is None or regions==int(args.regions)) and (args.train is None or trainIterations==int(args.train)) and (args.trainmin is None or trainIterations>=int(args.trainmin)) and (args.trainmax is None or trainIterations<=int(args.trainmax))):
-            
+            if ((args.regions is None or regions==int(args.regions)) and (args.train is None or trainIterations==int(args.train)) and (args.trainmin is None or trainIterations>=int(args.trainmin)) and (args.trainmax is None or trainIterations<=int(args.trainmax))):
                 # testIterations=int(record["testIterations"])
 
                 # total_pos=int(record["total_pos"])
@@ -75,6 +75,7 @@ for flname in filenames:
                 relErrNum = np.asarray(record["relerr"], dtype=np.uint32)
                 relErrNum = relErrNum.view(dtype=np.float32)
 
+                print(f"processing reg {regions}, {trainIterations} trainIteration,  {len(relErrNum)} values")
                 # relErrMean=np.mean(relErrNum)*100
                 # relErrVar=np.var(relErrNum)*100
                 # relErrMin = np.min(relErrNum)*100
@@ -107,6 +108,7 @@ for flname in filenames:
                 if (total_neg!=total_neg_tresh):
                     print("ERROR! total_neg!=total_neg_tresh")
 
+                count=0
                 for er in relErrNum:
                     for thri in range(1, len(fntresholds)):
                         if (isnan(er)):
@@ -117,8 +119,9 @@ for flname in filenames:
                             else:
                                 break
                 #                        df.loc[len(df.index)] = [args.name, regions, trainIterations, testIterations, fntresholds, fn_withthresh]                        
+                    count=count+1
                 df = pd.concat( 
-                    [ df, pd.DataFrame( data = { 'name': np.full(len(fntresholds), args.name), 'regions': np.full(len(fntresholds), regions), 'trainingIterations': np.full(len(fntresholds), trainIterations), 'threshold': fntresholds*100, 'fn_rate': fn_withthresh } ) ]
+                    [ df, pd.DataFrame( data = { 'name': np.full(len(fntresholds), args.name), 'regions': np.full(len(fntresholds), regions), 'trainingIterations': np.full(len(fntresholds), trainIterations), 'threshold': fntresholds*100, 'fn_rate': (fn_withthresh/total_neg)*100 } ) ]
                     )
 
 if (args.append is None):
