@@ -31,7 +31,7 @@ if (args.regions is None):
     columns.append('regions')
 if (args.trainiterations is None):
     columns.append('trainiterations')
-columns.append('relerr')
+columns.append('percerr')
 
 df = pd.DataFrame(columns=columns)
 
@@ -45,6 +45,7 @@ for flname in filenames:
 
                 relErrNum = np.asarray(record["relerr"], dtype=np.uint32)
                 relErrNum = relErrNum.view(dtype=np.float32)
+                relErrNum = relErrNum * 100
 
                 datadict={}
                 if (args.regions is None):
