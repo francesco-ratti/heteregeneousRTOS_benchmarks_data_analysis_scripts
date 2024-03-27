@@ -28,7 +28,7 @@ args=parser.parse_args()
 filenames=args.filename.split(",")
 
 
-df = pd.DataFrame(columns=['Benchmark', 'regions', 'trainingIterations', 'testIterations', 'fp_rate', 'fn_rate', 'fn_relerr_mean','fn_relerr_var', 'fn_relerr_firstquartile', 'fn_relerr_median', 'fn_relerr_thirdquartile', 'fn_relerr_min', 'fn_relerr_max'])
+df = pd.DataFrame(columns=['Benchmark', 'regions', 'trainingIterations', 'testIterations', 'fp_rate', 'fn_rate', 'fn_percerr_mean','fn_relerr_var', 'fn_percerr_firstquartile', 'fn_percerr_median', 'fn_percerr_thirdquartile', 'fn_percerr_min', 'fn_percerr_max'])
 
 for flname in filenames:
 
@@ -61,13 +61,13 @@ for flname in filenames:
             relErrNum = relErrNum.view(dtype=np.float32)
 
             relErrVar=np.var(relErrNum)
-            relErrMin=np.min(relErrNum)
-            relErrMax=np.max(relErrNum)
-            relErrMean=np.mean(relErrNum)
+            percerrMin=np.min(relErrNum)*100
+            percerrMax=np.max(relErrNum)*100
+            percerrMean=np.mean(relErrNum)*100
 
-            print(f"Progress: regions {regions}, trainIterations {trainIterations}, testIterations {testIterations}\ntot pos {total_pos}, tp {tp}, fp {fp} fp rate {fp_rate} | tot neg {total_neg}, tn {tn}, fn {fn} fn rate {fn_rate} | rel err mean: {relErrMean} max: {relErrMax} min: {relErrMin} var: {relErrVar}\n") #| precision {precision}, recall {recall}, accuracy {accuracy}\n")
+            print(f"Progress: regions {regions}, trainIterations {trainIterations}, testIterations {testIterations}\ntot pos {total_pos}, tp {tp}, fp {fp} fp rate {fp_rate} | tot neg {total_neg}, tn {tn}, fn {fn} fn rate {fn_rate} | perc err mean: {percerrMean} max: {percerrMax} min: {percerrMin} rel err var: {relErrVar}\n") #| precision {precision}, recall {recall}, accuracy {accuracy}\n")
             
-            df.loc[len(df.index)] = [args.name, regions, trainIterations, testIterations, fp_rate, fn_rate, relErrMean, relErrVar, np.percentile(relErrNum, 25), np.percentile(relErrNum, 50), np.percentile(relErrNum, 75), relErrMin, relErrMax]
+            df.loc[len(df.index)] = [args.name, regions, trainIterations, testIterations, fp_rate, fn_rate, percerrMean, relErrVar, np.percentile(relErrNum, 25)*100, np.percentile(relErrNum, 50)*100, np.percentile(relErrNum, 75)*100, percerrMin, percerrMax]
 
 if (args.append is None):
     df.to_csv(args.outfilename, sep=';')
