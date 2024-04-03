@@ -1,0 +1,12 @@
+swlegend;4 tasks, 4 CL, CPU;8 tasks, 8 CL, CPU;16 tasks, 4CL, CPU;32 tasks, 4CL, CPU;32 tasks, 8 CL, CPU
+fpgalegend; FPGA
+swschedulercolour;black;red;blue;grey;green
+fpgaschedulercolour;olive
+fpgascheduleroverhead_noreexec;5.738
+fpgascheduleroverhead_reexec;6.022
+fpgaschedulerjobendoverhead;1.188
+swscheduleroverhead_noreexec;22.471;38.769;51.545;91.003;115.012
+swscheduleroverhead_reexec;22.387;38.685;51.461;90.919;114.928
+swschedulerjobendoverhead;0.446
+swschedulertick;50000;50000;50000;50000;50000;50000
+fpgaschedulertick;5
